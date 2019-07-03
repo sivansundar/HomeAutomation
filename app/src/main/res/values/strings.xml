@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Home Automation</string>
+
+    <string name="forgot_password_string"><u>Forgot Password?</u> </string>
+
+    <string name="signUp_string">Not registered ? <b>Sign up</b></string>
+</resources>
