@@ -23,52 +23,91 @@
 
 
         <TextView
-            android:textStyle="bold"
-            android:padding="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#fff"
+            android:padding="20dp"
             android:text="LOGIN"
-            android:textSize="32sp"/>
+            android:textColor="#fff"
+            android:textSize="32sp"
+            android:textStyle="bold" />
 
         <RelativeLayout
-            android:padding="20dp"
             android:id="@+id/loginHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="20dp">
 
 
             <EditText
-                android:textColor="#fff"
                 android:id="@+id/userIDTxt"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Email"
-                android:textColorHint="#fafafa"/>
+                android:textColor="#fff"
+                android:textColorHint="#fafafa" />
 
             <EditText
-                android:textColor="#fff"
-                android:textColorHint="#fafafa"
-                android:layout_below="@+id/userIDTxt"
                 android:id="@+id/passwordTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/userIDTxt"
                 android:hint="Password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textColor="#fff"
+                android:textColorHint="#fafafa" />
 
 
             <TextView
-                android:textSize="18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/passwordTxt"
                 android:layout_alignParentRight="true"
-                android:text="@string/forgot_password_string"
                 android:layout_marginTop="10dp"
+                android:text="@string/forgot_password_string"
                 android:textColor="#fff"
-                />
+                android:textSize="18sp" />
 
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/loginHolder2"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_alignParentBottom="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_centerHorizontal="true"
+                android:textColor="#000"
+                app:backgroundTint="#fff"
+                app:rippleColor="#808080"
+                android:id="@+id/loginButton"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Login"/>
+
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/mSignInButton"
+                android:layout_below="@+id/loginButton"
+                android:layout_centerHorizontal="true"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content">
+
+            </com.google.android.gms.common.SignInButton>
+
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/mSignInButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/notRegistered_textview"
+                android:textColor="#fff"
+                android:text="@string/signUp_string"/>
 
 
 
@@ -77,38 +116,7 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/loginHolder2"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_alignParentBottom="true">
 
-        <Button
-            android:layout_centerHorizontal="true"
-            android:textColor="#000"
-            android:id="@+id/loginButton"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Login"/>
-
-
-
-
-        <TextView
-            android:layout_marginTop="20dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/loginButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/notRegistered_textview"
-            android:textColor="#fff"
-            android:text="@string/signUp_string"/>
-
-
-
-
-    </RelativeLayout>
 
 
 </RelativeLayout>
