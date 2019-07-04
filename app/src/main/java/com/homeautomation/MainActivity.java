@@ -1,14 +1,19 @@
 package com.homeautomation;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
@@ -21,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
     TextView name_label;
     @BindView(R.id.userdp_circleImageView)
     CircularImageView userpic_circular;
+    @BindView(R.id.temp_text)
+    TextView temp_text;
+    @BindView(R.id.humidity_text)
+    TextView humidity_text;
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -58,6 +67,30 @@ public class MainActivity extends AppCompatActivity {
             getUserDetails();
 
         }
+
+        getWeatherDetails();
+    }
+
+    private void getWeatherDetails() {
+        databaseReference.child("ESP-A405/weather/indoor").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                WeatherModel weatherModel = dataSnapshot.getValue(WeatherModel.class);
+
+                float temp = weatherModel.getTemperature();
+                int humidity = weatherModel.getHumidity();
+
+                temp_text.setText(""+ temp + "°C");
+                humidity_text.setText("" + humidity + "%");
+                Log.d("Mainactivity : ", "onDataChange: Humidity : " + humidity + "\n Temp : " + temp);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void getUserDetails() {
