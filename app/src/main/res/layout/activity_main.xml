@@ -53,6 +53,7 @@
 
 
     <LinearLayout
+        android:id="@+id/main_holder"
         android:orientation="vertical"
         android:padding="20dp"
         android:layout_width="match_parent"
@@ -132,4 +133,13 @@
         </RelativeLayout>
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/appliance_recyclerView"
+        android:layout_below="@+id/main_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
 </RelativeLayout>
