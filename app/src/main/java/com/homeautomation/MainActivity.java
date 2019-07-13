@@ -1,12 +1,12 @@
 package com.homeautomation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +18,6 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,8 +28,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -116,29 +113,30 @@ public class MainActivity extends AppCompatActivity {
                 applianceViewHolder.setTitle(applianceModel.getTitle());
                 applianceViewHolder.setPinNo(String.valueOf(applianceModel.getpinNo()));
 
+                //applianceViewHolder.setSwitch(applianceModel.getAppID());
+
                 int status = applianceModel.getStatus();
-                Log.d("Main Activity : ", "onBindViewHolder: Status : " + status);
-                applianceViewHolder.setSwitch(status);
 
-                ((DatabaseReference) query).child(applianceModel.getAppID()).addValueEventListener(new ValueEventListener() {
+                if (status == 0) {
+                    applianceViewHolder.switchstatus.setChecked(false);
+                }
+
+                if (status == 1) {
+                    applianceViewHolder.switchstatus.setChecked(true);
+                }
+
+                String appID = applianceModel.getAppID();
+
+//                applianceViewHolder.setSwitch(appID);
+
+                applianceViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    ApplianceModel applianceModel = dataSnapshot.getValue(ApplianceModel.class);
-                    int value = applianceModel.getStatus();
-
-                    if (value==0) {
-                        applianceViewHolder.setSwitch(0);
-                    }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MainActivity.this, ApplianceActivity.class);
+                        intent.putExtra("appID", appID);
+                        startActivity(intent);
                     }
                 });
-
-
-
 
 
             }
@@ -161,14 +159,37 @@ public class MainActivity extends AppCompatActivity {
         firebaseRecyclerAdapter.startListening();
     }
 
-    public static class ApplianceViewHolder extends RecyclerView.ViewHolder {
+    private void updateSwitchStatus(int i, String appID) {
+        databaseReference.child("ESP-A405/hall").child(appID).child("status").setValue(i).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("MainActivity", "Database value changed :  " + appID + ": " + i);
+
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("MainActivity", "Database value updation error :  " + e);
+
+                    }
+                });
+    }
+
+    public class ApplianceViewHolder extends RecyclerView.ViewHolder {
         View mView;
+
+
+        public SwitchCompat switchstatus;
 
         public ApplianceViewHolder(@NonNull View itemView) {
             super(itemView);
             mView = itemView;
 
+            switchstatus = (SwitchCompat) mView.findViewById(R.id.switchStatus);
+
         }
+
 
         public void setTitle(String title) {
             TextView mTitleText = (TextView) mView.findViewById(R.id.appliance_title_text);
@@ -180,17 +201,10 @@ public class MainActivity extends AppCompatActivity {
             mPinNo.setText("GPIO : " + pinNo);
         }
 
-        public void setSwitch(int switchValue) {
+        public void setSwitch(String appID) {
 
-            SwitchCompat switchCompat = mView.findViewById(R.id.switchStatus);
-            if (switchValue==0) {
-                switchCompat.setChecked(false);
-            }
-
-            if (switchValue==1) {
-                switchCompat.setChecked(true);
-            }
         }
+
 
 
     }
